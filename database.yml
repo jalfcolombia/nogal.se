@@ -1,0 +1,63 @@
+~behavior_log:
+  created:
+    column:             created_at
+    not_null:           true
+    default:            now()
+    updated:            false
+  updated:
+    column:             updated_at
+    not_null:           false
+    default:            now()
+  deleted:
+    column:             deleted_at
+    not_null:           false
+    default:            now()
+~id:
+  type:                 int
+  primary_key:          true
+  auto_increment:       true
+  not_null:             true
+~actived:
+  type:                 bool
+  not_null:             true
+  default:              true
+  valid_data:           [true, false]
+rol:
+  _sequence:            rol_id_seq
+  id:                   ~id
+  rolname:
+    type:               string
+    length:             50
+    not_null:           true
+  actived:              ~actived
+  created_at:
+    type:               string
+    length:             19
+    not_null:           true
+    default:            __date('Y-m-d H:i:s')
+    updated:            false
+usuario:
+  _sequence:            usuario_id_seq
+  id:                   ~id
+  rol_id:
+    type:               int
+    not_null:           true
+    foreign_key:        id
+    table:              rol
+    display:            rolname
+  nickname:
+    type:               string
+    length:             50
+    not_null:           true
+  password:
+    type:               string
+    length:             32
+    not_null:           true
+    updated:            false
+  avatar:
+    type:               file
+    length:             37
+    not_null:           true
+    default:            avatar.png
+  actived:              ~actived
+  ~behavior_log:        ~behavior_log

@@ -1,2 +1,2 @@
-# nogal.se
-Nogal Student Edition es una implementación ORM en PHP basada en DAO para ser usada en los ambientes de aprendizaje del Servicio Nacional de Aprendizaje - SENA.
+# Nogal (Student Edition)
+It is an ORM implementation in PHP7 based on DAO to be used in the learning environments of the National Learning Service - SENA in Colombia.
