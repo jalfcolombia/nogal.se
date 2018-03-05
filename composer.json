@@ -21,5 +21,12 @@
   },
   "require": {
     "php": ">=7.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "NogalSE\\": "src/NogalSE/",
+      "NogalSE\\Driver\\": "src/NogalSE/Drivers/",
+      "NogalSE\\Interfaces\\": "src/NogalSE/Interfaces/"
+    }
   }
 }
