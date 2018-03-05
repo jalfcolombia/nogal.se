@@ -1,5 +1,5 @@
 {
-  "name": "cocosoft/nogal.se",
+  "name": "sena/nogal.se",
   "description": "Nogal (Student Edition) - It is an ORM implementation in PHP7 based on DAO to be used in the learning environments of the National Learning Service - SENA in Colombia.",
   "version": "0.0.1",
   "type": "library",
