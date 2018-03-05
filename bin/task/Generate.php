@@ -25,7 +25,7 @@ class Generate implements ITask
   {
     if (is_dir($this->output) === false)
     {
-      throw new Exception('El directorio otorgado ("' . $this->output . '") no existe o no es un directorio.');
+      throw new \Exception('El directorio otorgado ("' . $this->output . '") no existe o no es un directorio.');
     }
     else
     {
