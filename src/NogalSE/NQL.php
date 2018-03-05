@@ -54,7 +54,7 @@ class NQL implements IDriver
    */
   private $driverClass;
 
-  public function __construct(string $driver, string $pathDrivers)
+  public function __construct(string $driver, string $pathDrivers = null)
   {
     $this->driver      = $driver;
     $this->pathDrivers = $pathDrivers;
@@ -69,13 +69,16 @@ class NQL implements IDriver
    */
   private function loadDriver()
   {
-    if (is_file($this->pathDrivers . $this->driver . '.php') === true)
+    if ($this->pathDrivers !== null)
     {
-      require_once $this->pathDrivers . $this->driver . '.php';
-    }
-    else
-    {
-      throw new \Exception('El controlador ' . $this->driver . ' no existe');
+      if (is_file($this->pathDrivers . $this->driver . '.php') === true)
+      {
+        require_once $this->pathDrivers . $this->driver . '.php';
+      }
+      else
+      {
+        throw new \Exception('El controlador ' . $this->driver . ' no existe');
+      }
     }
   }
 
