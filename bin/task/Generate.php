@@ -87,7 +87,7 @@ class Generate implements ITask
     $gTable->main($table, $columns);
 
     include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'CRUD.php';
-    $gCrud = new Generate\CRUD();
+    $gCrud = new Generate\CRUD($this->app);
     $gCrud->main($table, $columns);
 
     $DataBase   = $this->dataSource;
