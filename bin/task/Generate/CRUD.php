@@ -255,6 +255,7 @@ class CRUD
 
   private function selectAll($TableName, $idsOrderBy, $select, $table, $deleted)
   {
+    $app = $this->app;
     $this->selectAll = <<<selectALL
   /**
    * [AGREGUE UN COMENTARIO]
