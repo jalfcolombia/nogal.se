@@ -10,14 +10,16 @@ class CRUD
   private $save;
   private $update;
   private $delete;
+  private $app;
 
-  public function __construct()
+  public function __construct($app)
   {
     $this->selectAll  = '';
     $this->selectById = '';
     $this->save       = '';
     $this->update     = '';
     $this->delete     = '';
+    $this->app        = $app;
   }
 
   public function getSelectAll()
@@ -258,10 +260,10 @@ class CRUD
    * [AGREGUE UN COMENTARIO]
    * @param string \$order_by Columna o columnas por las que se ordenará la información
    * @param string \$order Tipo de orden ASC o DESC
-   * @param int \$limit Registro en el que se empezará a dar la respuesta
-   * @param int \$offset Cantidad de registros que mostrarán a partir del límite dado
+   * @param int \$limit Cantidad de registros que mostrarán a partir del offset dado
+   * @param int \$offset Registro en el que se empezará a dar la respuesta
    * @param string \$output_type null en caso de que se requiera una respuesta en array y no en objetos del tipo $TableName
-   * @return \\NogalSE\\Table\\$TableName
+   * @return \\$app\\model\\$TableName
    * @throws \\PDOException
    */
   public function selectAll(string \$order_by = '$idsOrderBy', string \$order = 'ASC', int \$limit = -1, int \$offset = -1, \$output_type = __CLASS__)
@@ -283,11 +285,12 @@ selectALL;
 
   private function selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID)
   {
+    $app = $this->app;
     $this->selectById = <<<selectById
   /**
    * [AGREGUE UN COMENTARIO]$paramsComment
    * @param string \$output_type null en caso de que se requiera una respuesta en array y no en objetos del tipo $TableName
-   * @return \\NogalSE\\Table\\$TableName
+   * @return \\$app\\model\\$TableName
    * @throws \\PDOException
    */
   public function selectById($ids\$output_type = __CLASS__)
