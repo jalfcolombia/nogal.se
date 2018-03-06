@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * This file is part of the NogalSE package.
+ *
+ * (c) Julian Lasso <jalasso69@misena.edu.co>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace NogalSE;
 
 /**
- * 
+ * Clase controladora de la conexión a la base de datos
+ * @author Julián Andrés Lasso Figueroa <jalasso69@misena.edu.co>
  */
 class DataSource
 {
@@ -15,17 +25,25 @@ class DataSource
   private $db_params;
 
   /**
-   *
+   * Instancia de la clase PDO
+   * 
    * @var \PDO
    */
   private $db_instance;
 
   /**
-   *
+   * Arreglo asociativo con los parámetros de configuración necesarios.
+   * driver, host, port, dbname, user, password, hash
+   * 
    * @var array
    */
   protected $config;
 
+  /**
+   * 
+   * @param type $config Arreglo asociativo con los parámetros de configuración
+   * necesarios. driver, host, port, dbname, user, password, hash
+   */
   public function __construct($config)
   {
     $this->db_params   = array();
@@ -34,33 +52,43 @@ class DataSource
   }
 
   /**
+   * Define un parámetro con su valor y el tipo de parámetro para transferido
+   * a la consulta SQL
    * 
-   * @param string $param
-   * @param mixed $value
-   * @param int $type
+   * @param string $param Nombre del parámetro
+   * @param mixed $value Valor del parámetro
+   * @param int $type Tipo de parámetro. Ejemplo PDO::PARAM_STR
    * @return DataSource
    */
-  protected function setDbParam(string $param, $value, int $type)
+  protected function setDbParam(string $param, $value, int $type): DataSource
   {
     $this->db_params[$param] = array('value' => $value, 'type' => $type);
     return $this;
   }
 
-  protected function hasDbParam($param)
+  /**
+   * Comprueba la existencia de un parámetro definido
+   * 
+   * @param type $param nombre del parámetro
+   * @return bool
+   */
+  protected function hasDbParam($param): bool
   {
     return isset($this->db_params[$param]);
   }
 
   /**
+   * Retorna el nombre del controlador de la base de datos ya establecido
    * 
    * @return string
    */
-  protected function getDbDriver()
+  protected function getDbDriver(): string
   {
     return $this->config['driver'];
   }
 
   /**
+   * Devueve la instancia de conexión de la base de datos.
    * 
    * @return \PDO
    * @throws \Exception
@@ -85,8 +113,9 @@ class DataSource
   }
 
   /**
+   * Asigna los parámetros establecidos en la variable $db_params
    * 
-   * @param \PDOStatement $stmt
+   * @param \PDOStatement $stmt Estamento utilizado en la conexión
    * @return \PDOStatement
    */
   private function bindParams(\PDOStatement $stmt): \PDOStatement
@@ -140,8 +169,10 @@ class DataSource
 
   /**
    * SELECT
+   * Método usado para realizar consultas tipo SELECT
+   * 
    * @param string $sql
-   * @param object $class_object
+   * @param object $class_object [opcional]
    * @return array
    * @throws \PDOException
    */
@@ -161,7 +192,11 @@ class DataSource
 
   /**
    * INSERT, UPDATE, DELETE
-   * @param string $sql
+   * Método para realizar consultas tipo INSERT, UPDATE y DELETE a la base datos.
+   * Las consultas tipo INSERT devuelven el ID con el que fue insertado.
+   * Las consultas tipo UPDATE y DELETE devuelven un cero (0).
+   * 
+   * @param string $sql Consulta SQL
    * @param string $getLastIdInsert
    * @return int
    * @throws \PDOException
