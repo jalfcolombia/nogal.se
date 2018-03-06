@@ -264,11 +264,11 @@ class CRUD
    * @return \\NogalSE\\Table\\$TableName
    * @throws \\PDOException
    */
-  public function selectAll(string \$order_by = '$idsOrderBy', string \$order = 'ASC', int \$limit = 0, int \$offset = 0, \$output_type = __CLASS__)
+  public function selectAll(string \$order_by = '$idsOrderBy', string \$order = 'ASC', int \$limit = -1, int \$offset = -1, \$output_type = __CLASS__)
   {
     try {
-      \$sql = 'SELECT $select FROM $table $deleted ORDER BY %s %s' . ((\$offset > 0) ? ' LIMIT %u OFFSET %u' : '');
-      if (\$offset > 0) {
+      \$sql = 'SELECT $select FROM $table $deleted ORDER BY %s %s' . ((\$offset >= 0) ? ' LIMIT %u OFFSET %u' : '');
+      if (\$offset >= 0) {
         \$sql = sprintf(\$sql, \$order_by, \$order, \$limit, \$offset);
       } else {
         \$sql = sprintf(\$sql, \$order_by, \$order);

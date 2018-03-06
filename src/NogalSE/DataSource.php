@@ -65,7 +65,7 @@ class DataSource
    * @return \PDO
    * @throws \Exception
    */
-  protected function getConection() : \PDO
+  protected function getConection(): \PDO
   {
     try
     {
@@ -89,7 +89,7 @@ class DataSource
    * @param \PDOStatement $stmt
    * @return \PDOStatement
    */
-  private function bindParams(\PDOStatement $stmt) : \PDOStatement
+  private function bindParams(\PDOStatement $stmt): \PDOStatement
   {
     if (count($this->db_params) > 0)
     {
@@ -155,7 +155,7 @@ class DataSource
     }
     catch (\PDOException $exc)
     {
-      throw new \Exception($exc->getMessage(), $exc->getCode(), $exc->getPrevious());
+      throw new \Exception($exc->getMessage());
     }
   }
 
@@ -166,13 +166,21 @@ class DataSource
    * @return int
    * @throws \PDOException
    */
-  protected function execute(string $sql, $getLastIdInsert = null) : int
+  protected function execute(string $sql, $getLastIdInsert = null): int
   {
     try
     {
       $stmt = $this->bindParams($this->getConection()->prepare($sql));
       $stmt->execute();
-      return $getLastIdInsert !== null ? $this->getConection()->lastInsertId($getLastIdInsert) : $this->getConection()->lastInsertId();
+      preg_match('/^(insert into )/i', $sql, $matches);
+      if (count($matches) > 0)
+      {
+        return $getLastIdInsert !== null ? $this->getConection()->lastInsertId($getLastIdInsert) : $this->getConection()->lastInsertId();
+      }
+      else
+      {
+        return 0;
+      }
     }
     catch (\PDOException $exc)
     {

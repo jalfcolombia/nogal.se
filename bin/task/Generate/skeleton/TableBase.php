@@ -5,9 +5,9 @@ $Table .= 'Base';
 $skeleton = <<<EOT
 <?php
 
-namespace NogalSE\\Table\\Base;
+namespace $app\\model\\base;
 
-use NogalSE\\$DataBase;
+use $app\\model\\$DataBase;
 use NogalSE\\Interfaces\\ITable;
 
 /**
@@ -35,4 +35,5 @@ $update
 $delete
 
 }
+
 EOT;
