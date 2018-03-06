@@ -11,6 +11,7 @@ class Generate implements ITask
   private $params;
   private $dataSource;
   private $output;
+  private $app;
 
   public function __construct($value, $params)
   {
@@ -19,6 +20,8 @@ class Generate implements ITask
     $this->dataSource = 'DataBase';
     $data             = explode(':', $params[2], 2);
     $this->output     = ($data[0] === 'output') ? $data[1] : false;
+    $data             = explode(':', $params[3], 2);
+    $this->app        = ($data[0] === 'app') ? $data[1] : false;
   }
 
   public function main()
@@ -43,7 +46,7 @@ class Generate implements ITask
   {
     include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'ExtendsDataSource' . '.php';
     $class = new Generate\ExtendsDataSource();
-    $class->main($this->dataSource, $this->output);
+    $class->main($this->dataSource, $this->output, $this->app);
   }
 
   private function createArrayConfig($yaml)
@@ -78,6 +81,7 @@ class Generate implements ITask
 
   private function createTable($table, $columns)
   {
+    $app = $this->app;
     include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'Table.php';
     $gTable = new Generate\Table();
     $gTable->main($table, $columns);
