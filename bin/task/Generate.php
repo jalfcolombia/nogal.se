@@ -7,32 +7,6 @@ use NogalSE\intf\ITask;
 class Generate implements ITask
 {
 
-<<<<<<< HEAD
-  private $main_value;
-  private $params;
-  private $dataSource;
-  private $output;
-  private $app;
-
-  public function __construct($value, $params)
-  {
-    $this->main_value = $value;
-    $this->params     = $params;
-    $this->dataSource = 'DataBase';
-    $data             = explode(':', $params[2], 2);
-    $this->output     = ($data[0] === 'output') ? $data[1] : false;
-    $data             = explode(':', $params[3], 2);
-    $this->app        = ($data[0] === 'app') ? $data[1] : false;
-  }
-
-  public function main()
-  {
-    if (is_dir($this->output) === false)
-    {
-      throw new \Exception('El directorio otorgado ("' . $this->output . '") no existe o no es un directorio.');
-    }
-    else
-=======
     private $main_value;
     private $params;
     private $dataSource;
@@ -40,7 +14,6 @@ class Generate implements ITask
     private $app;
 
     public function __construct($value, $params)
->>>>>>> 0.0.3
     {
         $this->main_value = $value;
         $this->params = $params;
@@ -50,17 +23,6 @@ class Generate implements ITask
         $data = explode(':', $params[3], 2);
         $this->app = ($data[0] === 'app') ? $data[1] : false;
     }
-<<<<<<< HEAD
-  }
-
-  private function generateExtendsDataSource()
-  {
-    include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'ExtendsDataSource' . '.php';
-    $class = new Generate\ExtendsDataSource();
-    $class->main($this->dataSource, $this->output, $this->app);
-  }
-=======
->>>>>>> 0.0.3
 
     public function main()
     {
@@ -82,23 +44,6 @@ class Generate implements ITask
         $class = new Generate\ExtendsDataSource();
         $class->main($this->dataSource, $this->output, $this->app);
     }
-<<<<<<< HEAD
-    unset($yaml['~behavior_log']);
-    return $yaml;
-  }
-
-  private function createTable($table, $columns)
-  {
-    $app = $this->app;
-    include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'Table.php';
-    $gTable = new Generate\Table();
-    $gTable->main($table, $columns);
-
-    include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'CRUD.php';
-    $gCrud = new Generate\CRUD($this->app);
-    $gCrud->main($table, $columns);
-=======
->>>>>>> 0.0.3
 
     private function createArrayConfig($yaml)
     {

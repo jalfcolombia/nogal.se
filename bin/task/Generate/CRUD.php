@@ -5,29 +5,6 @@ namespace NogalSE\Task\Generate;
 class CRUD
 {
 
-<<<<<<< HEAD
-  private $selectAll;
-  private $selectById;
-  private $save;
-  private $update;
-  private $delete;
-  private $app;
-
-  public function __construct($app)
-  {
-    $this->selectAll  = '';
-    $this->selectById = '';
-    $this->save       = '';
-    $this->update     = '';
-    $this->delete     = '';
-    $this->app        = $app;
-  }
-
-  public function getSelectAll()
-  {
-    return $this->selectAll;
-  }
-=======
     private $selectAll;
     private $selectById;
     private $save;
@@ -44,7 +21,6 @@ class CRUD
         $this->delete = '';
         $this->app = $app;
     }
->>>>>>> 0.0.3
 
     public function getSelectAll()
     {
@@ -250,25 +226,8 @@ class CRUD
 
     private function selectAll($TableName, $idsOrderBy, $select, $table, $deleted)
     {
-<<<<<<< HEAD
-      $deleted_at = 'deleted' . ' = ' . $columns['deleted']['default'];
-    }
-
-    $this->selectAll($TableName, $idsOrderBy, $select, $table, $deleted);
-    $this->selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID);
-    $this->save($table, $saveParams, $saveValues, $setDbParamColumns);
-    $this->update($table, $setUpdate, $paramsSelectById, $setDbParamColumnsUpdate, $setDbParamIDUpdate);
-    $this->delete($table, $paramsSelectById, $setDbParamIDUpdate, $deleted_at, $deleted_at_bind);
-  }
-
-  private function selectAll($TableName, $idsOrderBy, $select, $table, $deleted)
-  {
-    $app = $this->app;
-    $this->selectAll = <<<selectALL
-=======
         $app = $this->app;
         $this->selectAll = <<<selectALL
->>>>>>> 0.0.3
   /**
    * [AGREGUE UN COMENTARIO]
    * @param string \$order_by Columna o columnas por las que se ordenará la información
@@ -296,17 +255,10 @@ class CRUD
 selectALL;
     }
 
-<<<<<<< HEAD
-  private function selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID)
-  {
-    $app = $this->app;
-    $this->selectById = <<<selectById
-=======
     private function selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID)
     {
         $app = $this->app;
         $this->selectById = <<<selectById
->>>>>>> 0.0.3
   /**
    * [AGREGUE UN COMENTARIO]$paramsComment
    * @param string \$output_type null en caso de que se requiera una respuesta en array y no en objetos del tipo $TableName
