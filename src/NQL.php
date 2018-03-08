@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the NogalSE package.
+ *
+ * (c) Julian Lasso <jalasso69@misena.edu.co>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace NogalSE;
 
 use NogalSE\Interfaces\IDriver;
@@ -9,6 +18,7 @@ use NogalSE\Interfaces\IDriver;
  * operaciones básicas sobre entidades tales como la creación, borrado, carga,
  * filtrado y ordenación. En ocasiones, sin embargo, es necesario realizar
  * consultas más complejas que no pueden resolverse con estos métodos.
+ * 
  * @author Julián Andrés Lasso Figueroa <jalasso69@misena.edu.co>
  */
 class NQL implements IDriver
@@ -36,24 +46,33 @@ class NQL implements IDriver
 
   /**
    * Controlador de PDO a usar, Ejemplo: pgsql, mysql
+   * 
    * @var string
    */
   private $driver;
 
   /**
    * Dirección de la carpeta contenedora de las clases controladoras para
-   * compatibilidad con NQL y los motores de bases de datos
+   * compatibilidad con NQL y los motores de bases de datos.
+   * 
    * @var string
    */
   private $pathDrivers;
 
   /**
    * Variable contenedora del objeto referente a la clase del motor de
-   * bases de datos para NQL
+   * bases de datos para NQL.
+   * 
    * @var object
    */
   private $driverClass;
 
+  /**
+   * Constructor de la clase NQL
+   * 
+   * @param string $drive Controlador de base de datos a usar
+   * @param string $pathDrivers 
+   */
   public function __construct(string $driver, string $pathDrivers = null)
   {
     $this->driver      = $driver;
@@ -84,6 +103,7 @@ class NQL implements IDriver
 
   /**
    * Agrega una condición AND u OR según la necesidad
+   * 
    * @param string $typeCondition Condicionales NQL::_AND u NQL::_OR
    * @param string $condition Condición a utilizar. Ejemplo id = 33
    * @param bool $raw true: "id = 69" o false: "id" = "id = :id" esta última

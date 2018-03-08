@@ -6,14 +6,10 @@ error_reporting(E_ALL);
 
 require 'vendor/autoload.php';
 
-//include_once 'core/Interfaces/IDriver.php';
-//include_once 'core/nql.php';
-
 use NogalSE\NQL;
 
 try
 {
-  //$nql = new NQL('pgsql', __DIR__ . '/src/NogalSE/Drivers/');
   $nql = new NQL('pgsql');
   $nql->select('id, name, created_at')
     ->from('usuario')
