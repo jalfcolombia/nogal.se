@@ -3,7 +3,7 @@
 $skeleton = <<<BLOCK
 <?php
 
-namespace $app\\model;
+namespace $app\\Model;
 
 use NogalSE\\DataSource;
 
