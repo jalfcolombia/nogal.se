@@ -5,6 +5,7 @@ namespace NogalSE\Task\Generate;
 class CRUD
 {
 
+<<<<<<< HEAD
   private $selectAll;
   private $selectById;
   private $save;
@@ -26,223 +27,230 @@ class CRUD
   {
     return $this->selectAll;
   }
+=======
+    private $selectAll;
+    private $selectById;
+    private $save;
+    private $update;
+    private $delete;
+    private $app;
 
-  public function getSelectById()
-  {
-    return $this->selectById;
-  }
-
-  public function getSave()
-  {
-    return $this->save;
-  }
-
-  public function getUpdate()
-  {
-    return $this->update;
-  }
-
-  public function getDelete()
-  {
-    return $this->delete;
-  }
-
-  public function setSelectAll($selectAll)
-  {
-    $this->selectAll = $selectAll;
-  }
-
-  public function setSelectById($selectById)
-  {
-    $this->selectById = $selectById;
-  }
-
-  public function setSave($save)
-  {
-    $this->save = $save;
-  }
-
-  public function setUpdate($update)
-  {
-    $this->update = $update;
-  }
-
-  public function setDelete($delete)
-  {
-    $this->delete = $delete;
-  }
-
-  public function main($table, $columns)
-  {
-    unset($columns['_sequence']);
-    $TableName               = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-    $primary_key             = array();
-    $idsOrderBy              = '';
-    $select                  = '';
-    $deleted                 = false;
-    $paramsComment           = '';
-    $ids                     = '';
-    $paramsSelectById        = '';
-    $setDbParamID            = '';
-    $saveParams              = '';
-    $saveValues              = '';
-    $setDbParamColumns       = '';
-    $setUpdate               = '';
-    $setDbParamIDUpdate      = '';
-    $setDbParamColumnsUpdate = '';
-    $deleted_at              = false;
-    $deleted_at_bind         = null;
-
-    foreach ($columns as $column => $attribute)
+    public function __construct($app)
     {
-      // array para llaves primarias
-      if (isset($attribute['primary_key']) === true and $attribute['primary_key'] === true)
-      {
-        $primary_key[] = array('column' => $column, 'type' => $attribute['type'], 'name' => ((isset($attribute['name']) === true) ? $attribute['name'] : $column));
-      }
-      else if (isset($attribute['primary_key']) === false and $column !== 'created' and $column !== 'deleted' and ( isset($attribute['updated']) === false))
-      {
+        $this->selectAll = '';
+        $this->selectById = '';
+        $this->save = '';
+        $this->update = '';
+        $this->delete = '';
+        $this->app = $app;
+    }
+>>>>>>> 0.0.3
 
-        $columnTempRaw  = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-        $columnTempName = (isset($attribute['name']) === true) ? $attribute['name'] : $column;
+    public function getSelectAll()
+    {
+        return $this->selectAll;
+    }
 
-        $setUpdate .= $columnTempRaw . " = :" . $columnTempName . ", ";
-        if ($column === 'updated' and isset($attribute['default']) and ! preg_match("/^(__)([a-zA-Z0-9\w]+)/", $attribute['default']))
-        {
-          $setUpdate = str_replace(":$columnTempName", $attribute['default'], $setUpdate);
+    public function getSelectById()
+    {
+        return $this->selectById;
+    }
+
+    public function getSave()
+    {
+        return $this->save;
+    }
+
+    public function getUpdate()
+    {
+        return $this->update;
+    }
+
+    public function getDelete()
+    {
+        return $this->delete;
+    }
+
+    public function setSelectAll($selectAll)
+    {
+        $this->selectAll = $selectAll;
+    }
+
+    public function setSelectById($selectById)
+    {
+        $this->selectById = $selectById;
+    }
+
+    public function setSave($save)
+    {
+        $this->save = $save;
+    }
+
+    public function setUpdate($update)
+    {
+        $this->update = $update;
+    }
+
+    public function setDelete($delete)
+    {
+        $this->delete = $delete;
+    }
+
+    public function main($table, $columns)
+    {
+        unset($columns['_sequence']);
+        $TableName = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+        $primary_key = array();
+        $idsOrderBy = '';
+        $select = '';
+        $deleted = false;
+        $paramsComment = '';
+        $ids = '';
+        $paramsSelectById = '';
+        $setDbParamID = '';
+        $saveParams = '';
+        $saveValues = '';
+        $setDbParamColumns = '';
+        $setUpdate = '';
+        $setDbParamIDUpdate = '';
+        $setDbParamColumnsUpdate = '';
+        $deleted_at = false;
+        $deleted_at_bind = null;
+
+        foreach ($columns as $column => $attribute) {
+            // array para llaves primarias
+            if (isset($attribute['primary_key']) === true and $attribute['primary_key'] === true) {
+                $primary_key[] = array('column' => $column, 'type' => $attribute['type'], 'name' => ((isset($attribute['name']) === true) ? $attribute['name'] : $column));
+            } else if (isset($attribute['primary_key']) === false and $column !== 'created' and $column !== 'deleted' and (isset($attribute['updated']) === false)) {
+
+                $columnTempRaw = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                $columnTempName = (isset($attribute['name']) === true) ? $attribute['name'] : $column;
+
+                $setUpdate .= $columnTempRaw . " = :" . $columnTempName . ", ";
+                if ($column === 'updated' and isset($attribute['default']) and !preg_match("/^(__)([a-zA-Z0-9\w]+)/", $attribute['default'])) {
+                    $setUpdate = str_replace(":$columnTempName", $attribute['default'], $setUpdate);
+                } else if ($column === 'updated' and isset($attribute['default']) and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $attribute['default'])) {
+                    $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnTempName)));
+                    $setDbParamColumns .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), \\PDO::PARAM_STR);";
+                }
+            }
+
+            // select para el selectAll y selectById
+            if ($column !== 'deleted') {
+
+                $columnTempRaw = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                $columnTempName = (isset($attribute['name']) === true) ? $attribute['name'] : $column;
+
+                $select .= $columnTempRaw . ', ';
+                // Columnas sin AUTO INCREMENTO
+                if (isset($attribute['auto_increment']) === false and $column !== 'updated') {
+                    // $columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                    $saveParams .= $columnTempRaw . ", ";
+                    $saveValues .= ":" . $columnTempName . ", ";
+
+                    if (isset($attribute['type']) === true and isset($attribute['primary_key']) === false) {
+                        $typeBind = '';
+                        switch ($attribute['type']) {
+                            case 'int':
+                                $typeBind = "\\PDO::PARAM_INT";
+                                break;
+                            case 'string':
+                                $typeBind = "\\PDO::PARAM_STR";
+                                break;
+                            case 'file':
+                                $typeBind = "\\PDO::PARAM_STR";
+                                break;
+                            case 'bool':
+                                $typeBind = "\\PDO::PARAM_BOOL";
+                                break;
+                        }
+                        // $columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                        $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnTempName)));
+                        $setDbParamColumns .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), $typeBind);";
+                        $setDbParamColumnsUpdate .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), $typeBind);";
+                        if (isset($attribute['updated']) === true and $attribute['updated'] === false) {
+                            $setDbParamColumnsUpdate = str_replace("\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), $typeBind);", '', $setDbParamColumnsUpdate);
+                        }
+                    }
+                    if ($column === 'created' and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $attribute['default'])) {
+                        //$columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                        $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnTempName)));
+                        $setDbParamColumns .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), \\PDO::PARAM_STR);";
+                    } else if ($column === 'created') {
+                        //$columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                        $saveValues = str_replace(":$columnTempName", $attribute['default'], $saveValues);
+                    }
+                }
+            } else if ($column === 'deleted') {
+                // WHERE deleted_at IS NULL
+                //$columnDeletedName = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
+                $deleted = "WHERE $columnTempRaw IS NULL";
+            }
         }
-        else if ($column === 'updated' and isset($attribute['default']) and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $attribute['default']))
-        {
-          $columCamelCase    = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnTempName)));
-          $setDbParamColumns .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), \\PDO::PARAM_STR);";
-        }
-      }
 
-      // select para el selectAll y selectById
-      if ($column !== 'deleted')
-      {
+        foreach ($primary_key as $attribute) {
+            $idsOrderBy .= $attribute['column'] . ', ';
+            $paramsComment .= "\n   * @param " . $attribute['type'] . " \$" . $attribute['name'] . " [AGREGUE UNA DESCRIPCIÓN]";
+            $ids .= $attribute['type'] . " \$" . $attribute['name'] . ", ";
+            $paramsSelectById .= $attribute['column'] . " = :" . $attribute['name'] . " AND ";
 
-        $columnTempRaw  = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-        $columnTempName = (isset($attribute['name']) === true) ? $attribute['name'] : $column;
-
-        $select .= $columnTempRaw . ', ';
-        // Columnas sin AUTO INCREMENTO
-        if (isset($attribute['auto_increment']) === false and $column !== 'updated')
-        {
-          // $columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-          $saveParams .= $columnTempRaw . ", ";
-          $saveValues .= ":" . $columnTempName . ", ";
-
-          if (isset($attribute['type']) === true and isset($attribute['primary_key']) === false)
-          {
             $typeBind = '';
-            switch ($attribute['type'])
-            {
-              case 'int':
-                $typeBind = "\\PDO::PARAM_INT";
-                break;
-              case 'string':
-                $typeBind = "\\PDO::PARAM_STR";
-                break;
-              case 'file':
-                $typeBind = "\\PDO::PARAM_STR";
-                break;
-              case 'bool':
-                $typeBind = "\\PDO::PARAM_BOOL";
-                break;
+            switch ($attribute['type']) {
+                case 'int':
+                    $typeBind = "\\PDO::PARAM_INT";
+                    break;
+                case 'string':
+                    $typeBind = "\\PDO::PARAM_STR";
+                    break;
+                case 'file':
+                    $typeBind = "\\PDO::PARAM_STR";
+                    break;
+                case 'bool':
+                    $typeBind = "\\PDO::PARAM_BOOL";
+                    break;
             }
-            // $columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-            $columCamelCase          = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnTempName)));
-            $setDbParamColumns       .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), $typeBind);";
-            $setDbParamColumnsUpdate .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), $typeBind);";
-            if (isset($attribute['updated']) === true and $attribute['updated'] === false)
-            {
-              $setDbParamColumnsUpdate = str_replace("\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), $typeBind);", '', $setDbParamColumnsUpdate);
-            }
-          }
-          if ($column === 'created' and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $attribute['default']))
-          {
-            //$columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-            $columCamelCase    = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnTempName)));
-            $setDbParamColumns .= "\n      \$this->setDbParam(':$columnTempName', \$this->get$columCamelCase(), \\PDO::PARAM_STR);";
-          }
-          else if ($column === 'created')
-          {
-            //$columnTemp = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-            $saveValues = str_replace(":$columnTempName", $attribute['default'], $saveValues);
-          }
+            $setDbParamID .= "\n      \$this->setDbParam(':" . $attribute['name'] . "', \$" . $attribute['name'] . ", $typeBind);";
+            $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $attribute['name'])));
+            $setDbParamIDUpdate .= "\n      \$this->setDbParam(':" . $attribute['name'] . "', \$this->get$columCamelCase(), $typeBind);";
         }
-      }
-      else if ($column === 'deleted')
-      {
-        // WHERE deleted_at IS NULL
-        //$columnDeletedName = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-        $deleted = "WHERE $columnTempRaw IS NULL";
-      }
+
+        $select = substr($select, 0, -2);
+        $idsOrderBy = substr($idsOrderBy, 0, -2);
+        $paramsSelectById = substr($paramsSelectById, 0, -5);
+        $saveParams = substr($saveParams, 0, -2);
+        $saveValues = substr($saveValues, 0, -2);
+        $setUpdate = substr($setUpdate, 0, -2);
+
+        if ($deleted === false) {
+            $paramsSelectById = "WHERE " . $paramsSelectById;
+        } else {
+            $paramsSelectById = $deleted . " AND " . $paramsSelectById;
+        }
+
+        if (isset($columns['deleted']) === true and isset($columns['deleted']['column']) === true and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default'])) {
+            $deleted_at = $columns['deleted']['column'] . ' = :' . $columns['deleted']['column'];
+            $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $columns['deleted']['column'])));
+            $deleted_at_bind = "\n        \$this->setDbParam(':" . $columns['deleted']['column'] . "', \$this->get$columCamelCase(), \PDO::PARAM_STR);";
+        } else if (isset($columns['deleted']) === true and isset($columns['deleted']['column']) === true and !preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default'])) {
+            $deleted_at = $columns['deleted']['column'] . ' = ' . $columns['deleted']['default'];
+        } else if (isset($columns['deleted']) === true and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default'])) {
+            $deleted_at = 'deleted' . ' = :deleted';
+            $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', 'deleted')));
+            $deleted_at_bind = "\n        \$this->setDbParam(':deleted', \$this->get$columCamelCase(), \PDO::PARAM_STR);";
+        } else if (isset($columns['deleted']) === true and !preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default'])) {
+            $deleted_at = 'deleted' . ' = ' . $columns['deleted']['default'];
+        }
+
+        $this->selectAll($TableName, $idsOrderBy, $select, $table, $deleted);
+        $this->selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID);
+        $this->save($table, $saveParams, $saveValues, $setDbParamColumns);
+        $this->update($table, $setUpdate, $paramsSelectById, $setDbParamColumnsUpdate, $setDbParamIDUpdate);
+        $this->delete($table, $paramsSelectById, $setDbParamIDUpdate, $deleted_at, $deleted_at_bind);
     }
 
-    foreach ($primary_key as $attribute)
+    private function selectAll($TableName, $idsOrderBy, $select, $table, $deleted)
     {
-      $idsOrderBy       .= $attribute['column'] . ', ';
-      $paramsComment    .= "\n   * @param " . $attribute['type'] . " \$" . $attribute['name'] . " [AGREGUE UNA DESCRIPCIÓN]";
-      $ids              .= $attribute['type'] . " \$" . $attribute['name'] . ", ";
-      $paramsSelectById .= $attribute['column'] . " = :" . $attribute['name'] . " AND ";
-
-      $typeBind = '';
-      switch ($attribute['type'])
-      {
-        case 'int':
-          $typeBind = "\\PDO::PARAM_INT";
-          break;
-        case 'string':
-          $typeBind = "\\PDO::PARAM_STR";
-          break;
-        case 'file':
-          $typeBind = "\\PDO::PARAM_STR";
-          break;
-        case 'bool':
-          $typeBind = "\\PDO::PARAM_BOOL";
-          break;
-      }
-      $setDbParamID       .= "\n      \$this->setDbParam(':" . $attribute['name'] . "', \$" . $attribute['name'] . ", $typeBind);";
-      $columCamelCase     = str_replace(' ', '', ucwords(str_replace('_', ' ', $attribute['name'])));
-      $setDbParamIDUpdate .= "\n      \$this->setDbParam(':" . $attribute['name'] . "', \$this->get$columCamelCase(), $typeBind);";
-    }
-
-    $select           = substr($select, 0, -2);
-    $idsOrderBy       = substr($idsOrderBy, 0, -2);
-    $paramsSelectById = substr($paramsSelectById, 0, -5);
-    $saveParams       = substr($saveParams, 0, -2);
-    $saveValues       = substr($saveValues, 0, -2);
-    $setUpdate        = substr($setUpdate, 0, -2);
-
-    if ($deleted === false)
-    {
-      $paramsSelectById = "WHERE " . $paramsSelectById;
-    }
-    else
-    {
-      $paramsSelectById = $deleted . " AND " . $paramsSelectById;
-    }
-
-    if (isset($columns['deleted']) === true and isset($columns['deleted']['column']) === true and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default']))
-    {
-      $deleted_at      = $columns['deleted']['column'] . ' = :' . $columns['deleted']['column'];
-      $columCamelCase  = str_replace(' ', '', ucwords(str_replace('_', ' ', $columns['deleted']['column'])));
-      $deleted_at_bind = "\n        \$this->setDbParam(':" . $columns['deleted']['column'] . "', \$this->get$columCamelCase(), \PDO::PARAM_STR);";
-    }
-    else if (isset($columns['deleted']) === true and isset($columns['deleted']['column']) === true and ! preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default']))
-    {
-      $deleted_at = $columns['deleted']['column'] . ' = ' . $columns['deleted']['default'];
-    }
-    else if (isset($columns['deleted']) === true and preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default']))
-    {
-      $deleted_at      = 'deleted' . ' = :deleted';
-      $columCamelCase  = str_replace(' ', '', ucwords(str_replace('_', ' ', 'deleted')));
-      $deleted_at_bind = "\n        \$this->setDbParam(':deleted', \$this->get$columCamelCase(), \PDO::PARAM_STR);";
-    }
-    else if (isset($columns['deleted']) === true and ! preg_match("/^(__)([a-zA-Z0-9\w]+)/", $columns['deleted']['default']))
-    {
+<<<<<<< HEAD
       $deleted_at = 'deleted' . ' = ' . $columns['deleted']['default'];
     }
 
@@ -257,6 +265,10 @@ class CRUD
   {
     $app = $this->app;
     $this->selectAll = <<<selectALL
+=======
+        $app = $this->app;
+        $this->selectAll = <<<selectALL
+>>>>>>> 0.0.3
   /**
    * [AGREGUE UN COMENTARIO]
    * @param string \$order_by Columna o columnas por las que se ordenará la información
@@ -282,12 +294,19 @@ class CRUD
     }
   }
 selectALL;
-  }
+    }
 
+<<<<<<< HEAD
   private function selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID)
   {
     $app = $this->app;
     $this->selectById = <<<selectById
+=======
+    private function selectById($paramsComment, $TableName, $ids, $select, $table, $paramsSelectById, $setDbParamID)
+    {
+        $app = $this->app;
+        $this->selectById = <<<selectById
+>>>>>>> 0.0.3
   /**
    * [AGREGUE UN COMENTARIO]$paramsComment
    * @param string \$output_type null en caso de que se requiera una respuesta en array y no en objetos del tipo $TableName
@@ -304,11 +323,11 @@ selectALL;
     }
   }
 selectById;
-  }
+    }
 
-  private function save($table, $saveParams, $saveValues, $setDbParamColumns)
-  {
-    $this->save = <<<save
+    private function save($table, $saveParams, $saveValues, $setDbParamColumns)
+    {
+        $this->save = <<<save
   /**
    * [AGREGUE UN COMENTARIO]
    * @return int Retorna el ID con el que fue registrado la tupla
@@ -324,11 +343,11 @@ selectById;
     }
   }
 save;
-  }
+    }
 
-  private function update($table, $setUpdate, $paramsSelectById, $setDbParamColumnsUpdate, $setDbParamIDUpdate)
-  {
-    $this->update = <<<UPDATE
+    private function update($table, $setUpdate, $paramsSelectById, $setDbParamColumnsUpdate, $setDbParamIDUpdate)
+    {
+        $this->update = <<<UPDATE
   /**
    * [AGREGUE UN COMENTARIO]
    * @return boolean Retorna TRUE si la actualización se realizó exitosamente
@@ -345,13 +364,12 @@ save;
     }
   }
 UPDATE;
-  }
+    }
 
-  private function delete($table, $paramsSelectById, $setDbParamID, $deleted_at, $deleted_at_bind)
-  {
-    if ($deleted_at === false)
+    private function delete($table, $paramsSelectById, $setDbParamID, $deleted_at, $deleted_at_bind)
     {
-      $this->delete = <<<DELETE
+        if ($deleted_at === false) {
+            $this->delete = <<<DELETE
   /**
    * [AGREGUE UN COMENTARIO]
    * @param bool \$logical FALSE para borrado físico el borrado lógico no está implementado en esta tabla
@@ -375,10 +393,8 @@ UPDATE;
     }
   }
 DELETE;
-    }
-    else
-    {
-      $this->delete = <<<DELETE
+        } else {
+            $this->delete = <<<DELETE
   /**
    * [AGREGUE UN COMENTARIO]
    * @param bool \$logical TRUE para borrado lógico o FALSE para borrado físico
@@ -402,7 +418,7 @@ DELETE;
     }
   }
 DELETE;
+        }
     }
-  }
 
 }
