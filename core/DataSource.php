@@ -32,6 +32,32 @@ class DataSource
     $this->db_instance = null;
     $this->config      = $config;
   }
+  
+  /**
+   * Borra el parámetro indicado
+   * 
+   * @param string $param Parámetro a borrar del set de parámetros a trabajar en una consulta
+   * @return DataSource
+   */
+  protected function deleteDbParam(string $param)
+  {
+    if (isset($this->db_params[$param]) === true)
+    {
+      unset($this->db_params[$param]);
+    }
+    return $this;
+  }
+  
+  /**
+   * Borra la pila de parámetros usados en una consulta
+   *
+   * @return DataSource
+   */
+  protected function deleteDbParams()
+  {
+    $this->db_params = array();
+    return $this->
+  }
 
   /**
    * 
@@ -140,6 +166,7 @@ class DataSource
 
   /**
    * SELECT
+   * 
    * @param string $sql
    * @param object $class_object
    * @return array
@@ -157,10 +184,15 @@ class DataSource
     {
       throw new \Exception($exc->getMessage(), $exc->getCode(), $exc->getPrevious());
     }
+    finally
+    {
+      $this->deleteDbParams();
+    }
   }
 
   /**
    * INSERT, UPDATE, DELETE
+   * 
    * @param string $sql
    * @param string $getLastIdInsert
    * @return int
@@ -177,6 +209,10 @@ class DataSource
     catch (\PDOException $exc)
     {
       throw new \Exception($exc->getMessage(), $exc->getCode(), $exc->getPrevious());
+    }
+    finally
+    {
+      $this->deleteDbParams();
     }
   }
 
