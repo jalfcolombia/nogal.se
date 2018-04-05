@@ -3,9 +3,9 @@
 $skeleton = <<<EOT
 <?php
 
-namespace NogalSE\\Table;
+namespace $app\\model;
 
-use NogalSE\\Table\\Base\\$TableBase;
+use $app\\model\\base\\$TableBase;
 
 /**
  * [AGREGAR UNA DESCRIPCION]
@@ -14,4 +14,5 @@ class $Table extends $TableBase
 {
   
 }
+
 EOT;

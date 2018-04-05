@@ -31,10 +31,8 @@ class Table
 
   public function main($table, $columns)
   {
-    foreach ($columns as $colum => $data)
-    {
-      switch ($colum)
-      {
+    foreach ($columns as $colum => $data) {
+      switch ($colum) {
         // generando la secuencia en caso de PostgreSQL
         case '_sequence':
           $this->sequence            = $data;
@@ -44,14 +42,11 @@ class Table
         case 'created':
           $column                    = (isset($columns['created']['name']) === true) ? $columns['created']['name'] : $columns['created']['column'];
           $this->behavior['private'] .= "  private \$$column;" . ((isset($columns['updated']) === true) or ( isset($columns['deleted']) === true)) ? "\n" : null;
-          if (isset($columns['created']['not_null']) === true and $columns['created']['not_null'] === true)
-          {
-            if (strpos($columns['created']['default'], ':') !== false)
-            {
+          if (isset($columns['created']['not_null']) === true and $columns['created']['not_null'] === true) {
+            if (strpos($columns['created']['default'], ':') !== false) {
               $default = str_replace(':', '', $columns['created']['default']);
             }
-            else
-            {
+            else {
               $default = "'" . $columns['created']['default'] . "'";
             }
             $this->behavior['default'] .= "    \$this->$column = $default;" . ((isset($columns['updated']) === true) or ( isset($columns['deleted']) === true)) ? "\n" : null;
@@ -83,14 +78,11 @@ SETTER;
           $column                    = (isset($columns['updated']['name']) === true) ? $columns['updated']['name'] : $columns['updated']['column'];
           $this->behavior['private'] .= "  private \$$column;" . (( isset($columns['deleted']) === true)) ? "\n" : null;
 
-          if (isset($columns['updated']['not_null']) === true and $columns['updated']['not_null'] === true)
-          {
-            if (strpos($columns['updated']['default'], ':') !== false)
-            {
+          if (isset($columns['updated']['not_null']) === true and $columns['updated']['not_null'] === true) {
+            if (strpos($columns['updated']['default'], ':') !== false) {
               $default = str_replace(':', '', $columns['updated']['default']);
             }
-            else
-            {
+            else {
               $default = "'" . $columns['updated']['default'] . "'";
             }
             $this->behavior['default'] .= "    \$this->$column = $default;" . ( isset($columns['deleted']) === true) ? "\n" : null;
@@ -122,14 +114,11 @@ SETTER;
           $column                    = (isset($columns['deleted']['name']) === true) ? $columns['deleted']['name'] : $columns['deleted']['column'];
           $this->behavior['private'] .= "  private \$$column;";
 
-          if (isset($columns['deleted']['not_null']) === true and $columns['deleted']['not_null'] === true)
-          {
-            if (strpos($columns['updated']['default'], ':') !== false)
-            {
+          if (isset($columns['deleted']['not_null']) === true and $columns['deleted']['not_null'] === true) {
+            if (strpos($columns['updated']['default'], ':') !== false) {
               $default = str_replace(':', '', $columns['deleted']['default']);
             }
-            else
-            {
+            else {
               $default = "'" . $columns['deleted']['default'] . "'";
             }
             $this->behavior['default'] .= "    \$this->$column = $default;";
@@ -163,8 +152,7 @@ SETTER;
       }
     }
 
-    if (is_array($this->behavior) === false)
-    {
+    if (is_array($this->behavior) === false) {
       $this->behavior = null;
     }
   }
@@ -173,8 +161,7 @@ SETTER;
   {
     $columnName = (isset($data['name']) === true) ? $data['name'] : $column;
     // LENGTH
-    if ($data['type'] === 'string' or $data['type'] === 'file')
-    {
+    if ($data['type'] === 'string' or $data['type'] === 'file') {
       $this->length .= "\n  const " . strtoupper($columnName) . "_LENGTH = " . $data['length'] . ";";
     }
 
@@ -182,29 +169,22 @@ SETTER;
     $this->private .= "\n  private \$$columnName;";
 
     // default
-    if (isset($data['default']) === true and $data['not_null'] === true)
-    {
+    if (isset($data['default']) === true and $data['not_null'] === true) {
       $default = '';
-      if (strpos($data['default'], '__') !== false)
-      {
+      if (strpos($data['default'], '__') !== false) {
         $default = str_replace('__', '', $data['default']);
       }
-      else
-      {
-        if ($data['type'] === 'bool' and $data['default'] === true)
-        {
+      else {
+        if ($data['type'] === 'bool' and $data['default'] === true) {
           $default = 'true';
         }
-        else if ($data['type'] === 'bool' and $data['default'] === false)
-        {
+        else if ($data['type'] === 'bool' and $data['default'] === false) {
           $default = 'false';
         }
-        else if ($data['type'] === 'int')
-        {
+        else if ($data['type'] === 'int') {
           $default = $data['default'];
         }
-        else if ($data['type'] === 'string' or $data['type'] === 'file')
-        {
+        else if ($data['type'] === 'string' or $data['type'] === 'file') {
           $default = "'" . $data['default'] . "'";
         }
       }
@@ -213,8 +193,7 @@ SETTER;
 
     $columCamelCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $columnName)));
 
-    if (isset($data['foreign_key']) === false)
-    {
+    if (isset($data['foreign_key']) === false) {
       $this->getter .= <<<GETTER
 
   public function get$columCamelCase() {
@@ -223,15 +202,13 @@ SETTER;
 
 GETTER;
     }
-    else if (isset($data['foreign_key']) === true and isset($data['table']) === true and isset($data['display']) === true)
-    {
+    else if (isset($data['foreign_key']) === true and isset($data['table']) === true and isset($data['display']) === true) {
       $tableFK   = $data['table'];
       $displayFK = $data['display'];
       $fk        = $data['foreign_key'];
       // \$sql = 'SELECT $tableFK.$displayFK AS custom FROM $tableFK WHERE $tableFK.$fk = $table.$column AND ';
       $typeBind  = '';
-      switch ($data['type'])
-      {
+      switch ($data['type']) {
         case 'int':
           $typeBind = "\\PDO::PARAM_INT";
           break;

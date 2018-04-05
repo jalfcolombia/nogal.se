@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the NogalSE package.
+ *
+ * (c) Julian Lasso <jalasso69@misena.edu.co>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace NogalSE\Interfaces;
 
 /**
