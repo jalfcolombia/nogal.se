@@ -55,7 +55,7 @@ class DataSource
   /**
    * Borra el parámetro indicado
    * 
-   * @param string $param Parámetro a borrar de la pila de parámetros a trabajar en una consulta
+   * @param string $param Parámetro a borrar del set de parámetros a trabajar en una consulta
    * @return DataSource
    */
   protected function deleteDbParam(string $param): DataSource
