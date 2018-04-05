@@ -19,7 +19,7 @@ class Table
       'private' => '',
       'default' => '',
       'getter'  => '',
-      'setter'  => ''
+      'setter'  => '',
     );
     $this->sequence = '';
     $this->length   = '';
@@ -63,7 +63,7 @@ GETTER;
           $this->behavior['setter']  .= <<<SETTER
 
   /**
-   * 
+   *
    * @return \$this
    */
   public function set$columCamelCase(\$$column) {
@@ -76,7 +76,7 @@ SETTER;
         // behavior para updated
         case 'updated':
           $column                    = (isset($columns['updated']['name']) === true) ? $columns['updated']['name'] : $columns['updated']['column'];
-          $this->behavior['private'] .= "  private \$$column;" . (( isset($columns['deleted']) === true)) ? "\n" : null;
+          $this->behavior['private'] .= "  private \$$column;" . ((isset($columns['deleted']) === true)) ? "\n" : null;
 
           if (isset($columns['updated']['not_null']) === true and $columns['updated']['not_null'] === true) {
             if (strpos($columns['updated']['default'], ':') !== false) {
@@ -85,7 +85,7 @@ SETTER;
             else {
               $default = "'" . $columns['updated']['default'] . "'";
             }
-            $this->behavior['default'] .= "    \$this->$column = $default;" . ( isset($columns['deleted']) === true) ? "\n" : null;
+            $this->behavior['default'] .= "    \$this->$column = $default;" . (isset($columns['deleted']) === true) ? "\n" : null;
           }
 
           $columCamelCase            = str_replace(' ', '', ucwords(str_replace('_', ' ', $column)));
@@ -99,7 +99,7 @@ GETTER;
           $this->behavior['setter']  .= <<<SETTER
 
   /**
-   * 
+   *
    * @return \$this
    */
   public function set$columCamelCase(\$$column) {
@@ -135,7 +135,7 @@ GETTER;
           $this->behavior['setter'] .= <<<SETTER
 
   /**
-   * 
+   *
    * @return \$this
    */
   public function set$columCamelCase(\$$column) {
@@ -242,7 +242,7 @@ GETTER;
     $this->setter .= <<<SETTER
 
   /**
-   * 
+   *
    * @return \$this
    */
   public function set$columCamelCase(\$$columnName) {
