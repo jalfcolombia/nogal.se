@@ -8,8 +8,7 @@ require 'vendor/autoload.php';
 
 use NogalSE\NQL;
 
-try
-{
+try {
   $nql = new NQL('pgsql');
   $nql->select('id, name, created_at')
     ->from('usuario')
@@ -42,7 +41,6 @@ try
     ->condition(NQL::_AND, 'deleted_at IS NULL');
   echo "<br>\n" . $nql;
 }
-catch (\Exception $exc)
-{
+catch (\Exception $exc) {
   echo $exc->getMessage();
 }

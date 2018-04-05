@@ -61,6 +61,7 @@ class Generate implements ITask
             $arrayTemp[]           = $content;
           }
         }
+      }
     }
     foreach ($arrayTemp as $columnTemplate) {
       unset($yaml[$columnTemplate]);
@@ -108,46 +109,6 @@ class Generate implements ITask
       fwrite($file, $skeleton);
       fclose($file);
     }
-
-    private function createTable($table, $columns)
-    {
-        $app = $this->app;
-        include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'Table.php';
-        $gTable = new Generate\Table();
-        $gTable->main($table, $columns);
-
-        include_once __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'CRUD.php';
-        $gCrud = new Generate\CRUD($this->app);
-        $gCrud->main($table, $columns);
-
-        $DataBase = $this->dataSource;
-        $Table = str_replace(' ', '', ucfirst(str_replace('_', ' ', $table)));
-        $sequence = $gTable->getSequence();
-        $length = $gTable->getLength();
-        $private = $gTable->getPrivate();
-        $default = $gTable->getDefault();
-        $getter = $gTable->getGetter();
-        $setter = $gTable->getSetter();
-        $selectAll = $gCrud->getSelectAll();
-        $selectById = $gCrud->getSelectById();
-        $save = $gCrud->getSave();
-        $update = $gCrud->getUpdate();
-        $delete = $gCrud->getDelete();
-        include __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'skeleton' . DIRECTORY_SEPARATOR . 'TableBase.php';
-        if (is_dir($this->output . 'base/') === false) {
-            mkdir($this->output . 'base/');
-        }
-        $file = fopen($this->output . 'base/' . $Table . '.php', 'w');
-        fwrite($file, $skeleton);
-        fclose($file);
-        $TableBase = $Table;
-        $Table = str_replace('Base', '', $Table);
-        include __DIR__ . DIRECTORY_SEPARATOR . 'Generate' . DIRECTORY_SEPARATOR . 'skeleton' . DIRECTORY_SEPARATOR . 'Table.php';
-        if (is_file($this->output . $Table . '.php') === false) {
-            $file = fopen($this->output . $Table . '.php', 'w');
-            fwrite($file, $skeleton);
-            fclose($file);
-        }
-    }
+  }
 
 }
