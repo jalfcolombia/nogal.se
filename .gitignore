@@ -1,4 +1,5 @@
 nbproject/
 vendor/
 output/
+.idea/
 composer.lock
