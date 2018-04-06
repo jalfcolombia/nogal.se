@@ -3,9 +3,9 @@
 $skeleton = <<<EOT
 <?php
 
-namespace $app\\model;
+namespace $app\\Model;
 
-use $app\\model\\base\\$TableBase;
+use $app\\Model\\Base\\$TableBase;
 
 /**
  * [AGREGAR UNA DESCRIPCION]

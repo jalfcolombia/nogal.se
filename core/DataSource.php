@@ -19,7 +19,7 @@ class DataSource
 {
 
   /**
-   * 
+   * Pila de parámetros a usar en una sentencia SQL
    * 
    * @var array
    */

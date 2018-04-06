@@ -6,14 +6,9 @@ error_reporting(E_ALL);
 
 require 'vendor/autoload.php';
 
-//include_once 'core/Interfaces/IDriver.php';
-//include_once 'core/nql.php';
-
 use NogalSE\NQL;
 
-try
-{
-  //$nql = new NQL('pgsql', __DIR__ . '/src/NogalSE/Drivers/');
+try {
   $nql = new NQL('pgsql');
   $nql->select('id, name, created_at')
     ->from('usuario')
@@ -46,7 +41,6 @@ try
     ->condition(NQL::_AND, 'deleted_at IS NULL');
   echo "<br>\n" . $nql;
 }
-catch (\Exception $exc)
-{
+catch (\Exception $exc) {
   echo $exc->getMessage();
 }

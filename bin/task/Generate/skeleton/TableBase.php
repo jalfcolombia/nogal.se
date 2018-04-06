@@ -5,7 +5,7 @@ $Table .= 'Base';
 $skeleton = <<<EOT
 <?php
 
-namespace $app\\model\\base;
+namespace $app\\Model\\Base;
 
 use $app\\model\\$DataBase;
 use NogalSE\\Interfaces\\ITable;
