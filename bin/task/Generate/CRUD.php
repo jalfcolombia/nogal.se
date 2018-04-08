@@ -98,7 +98,7 @@ class CRUD
       if (isset($attribute['primary_key']) === true and $attribute['primary_key'] === true) {
         $primary_key[] = array('column' => $column, 'type' => $attribute['type'], 'name' => ((isset($attribute['name']) === true) ? $attribute['name'] : $column));
       }
-      else if (isset($attribute['primary_key']) === false and $column !== 'created' and $column !== 'deleted' and ( isset($attribute['updated']) === false)) {
+      else if (isset($attribute['primary_key']) === false and $column !== 'created' and $column !== 'deleted' and (isset($attribute['updated']) === false)) {
 
         $columnTempRaw  = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
         $columnTempName = (isset($attribute['name']) === true) ? $attribute['name'] : $column;
@@ -164,7 +164,7 @@ class CRUD
       else if ($column === 'deleted') {
         // WHERE deleted_at IS NULL
         //$columnDeletedName = (isset($attribute['column']) === true) ? $attribute['column'] : $column;
-        $deleted = "WHERE $columnTempRaw IS NULL";
+        $deleted = "WHERE " . ((isset($attribute['column']) === true) ? $attribute['column'] : $column) . " IS NULL";
       }
     }
 
@@ -238,26 +238,29 @@ class CRUD
     $this->selectAll = <<<selectALL
   /**
    * [AGREGUE UN COMENTARIO]
+   * 
    * @param string \$order_by Columna o columnas por las que se ordenará la información
    * @param string \$order Tipo de orden ASC o DESC
    * @param int \$limit Cantidad de registros que mostrarán a partir del offset dado
    * @param int \$offset Registro en el que se empezará a dar la respuesta
    * @param string \$output_type null en caso de que se requiera una respuesta en array y no en objetos del tipo $TableName
    * @return \\$app\\model\\$TableName
-   * @throws \\PDOException
+   * @throws \\Exception
    */
-  public function selectAll(string \$order_by = '$idsOrderBy', string \$order = 'ASC', int \$limit = -1, int \$offset = -1, \$output_type = __CLASS__)
+  public function SelectAll(string \$order_by = '$idsOrderBy', string \$order = 'ASC', int \$limit = -1, int \$offset = -1, \$output_type = __CLASS__)
   {
     try {
       \$sql = 'SELECT $select FROM $table $deleted ORDER BY %s %s' . ((\$offset >= 0) ? ' LIMIT %u OFFSET %u' : '');
       if (\$offset >= 0) {
         \$sql = sprintf(\$sql, \$order_by, \$order, \$limit, \$offset);
-      } else {
+      }
+      else {
         \$sql = sprintf(\$sql, \$order_by, \$order);
       }
       return \$this->query(\$sql, \$output_type);
-    } catch (\\PDOException \$exc) {
-      throw new \\PDOException(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
+    }
+    catch (\\Exception \$exc) {
+      throw new \\Exception(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
     }
   }
 selectALL;
@@ -268,18 +271,20 @@ selectALL;
     $app              = $this->app;
     $this->selectById = <<<selectById
   /**
-   * [AGREGUE UN COMENTARIO]$paramsComment
+   * [AGREGUE UN COMENTARIO]
+   * $paramsComment
    * @param string \$output_type null en caso de que se requiera una respuesta en array y no en objetos del tipo $TableName
    * @return \\$app\\model\\$TableName
-   * @throws \\PDOException
+   * @throws \\Exception
    */
-  public function selectById($ids\$output_type = __CLASS__)
+  public function SelectById($ids\$output_type = __CLASS__)
   {
     try {
       \$sql = 'SELECT $select FROM $table $paramsSelectById';$setDbParamID
       return \$this->query(\$sql, \$output_type);
-    } catch (\\PDOException \$exc) {
-      throw new \\PDOException(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
+    }
+    catch (\\Exception \$exc) {
+      throw new \\Exception(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
     }
   }
 selectById;
@@ -290,16 +295,18 @@ selectById;
     $this->save = <<<save
   /**
    * [AGREGUE UN COMENTARIO]
+   * 
    * @return int Retorna el ID con el que fue registrado la tupla
-   * @throws \\PDOException
+   * @throws \\Exception
    */
-  public function save()
+  public function Save()
   {
     try {
       \$sql = 'INSERT INTO $table ($saveParams) VALUES ($saveValues)';$setDbParamColumns
       return \$this->execute(\$sql, (\$this->getDbDriver() === 'pgsql') ? self::SEQUENCE : null);
-    } catch (\\PDOException \$exc) {
-      throw new \\PDOException(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
+    }
+    catch (\\Exception \$exc) {
+      throw new \\Exception(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
     }
   }
 save;
@@ -310,17 +317,19 @@ save;
     $this->update = <<<UPDATE
   /**
    * [AGREGUE UN COMENTARIO]
+   * 
    * @return boolean Retorna TRUE si la actualización se realizó exitosamente
-   * @throws \\PDOException
+   * @throws \\Exception
    */
-  public function update()
+  public function Update()
   {
     try {
       \$sql = 'UPDATE $table SET $setUpdate $paramsSelectById';$setDbParamColumnsUpdate$setDbParamIDUpdate
       \$this->execute(\$sql);
       return true;
-    } catch (\\PDOException \$exc) {
-      throw new \\PDOException(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
+    }
+    catch (\\Exception \$exc) {
+      throw new \\Exception(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
     }
   }
 UPDATE;
@@ -332,24 +341,28 @@ UPDATE;
       $this->delete = <<<DELETE
   /**
    * [AGREGUE UN COMENTARIO]
+   * 
    * @param bool \$logical FALSE para borrado físico el borrado lógico no está implementado en esta tabla
    * @return boolean
-   * @throws \\PDOException
+   * @throws \\Exception
    */
-  public function delete(bool \$logical = false)
+  public function Delete(bool \$logical = false)
   {
     try {
       if (\$logical === true) {
-        throw new \\PDOException('El borrado lógico es la tabla "$table" no está implementado', 500);
-      } else if (\$logical === false) {
+        throw new \\Exception('El borrado lógico es la tabla "$table" no está implementado', 500);
+      }
+      else if (\$logical === false) {
         \$sql = 'DELETE FROM $table $paramsSelectById';
-      } else {
-        throw new \\PDOException('El borrado lógico no está implementado para la tabla "$table"', 500);
+      }
+      else {
+        throw new \\Exception('El borrado lógico no está implementado para la tabla "$table"', 500);
       }$setDbParamID
       \$this->execute(\$sql);
       return true;
-    } catch (\\PDOException \$exc) {
-      throw new \\PDOException(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
+    }
+    catch (\\Exception \$exc) {
+      throw new \\Exception(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
     }
   }
 DELETE;
@@ -358,24 +371,28 @@ DELETE;
       $this->delete = <<<DELETE
   /**
    * [AGREGUE UN COMENTARIO]
+   * 
    * @param bool \$logical TRUE para borrado lógico o FALSE para borrado físico
    * @return boolean
-   * @throws \\PDOException
+   * @throws \\Exception
    */
-  public function delete(bool \$logical = true)
+  public function Delete(bool \$logical = true)
   {
     try {
       if (\$logical === true) {
         \$sql = 'UPDATE $table SET $deleted_at $paramsSelectById';$deleted_at_bind
-      } else if (\$logical === false) {
+      }
+      else if (\$logical === false) {
         \$sql = 'DELETE FROM $table $paramsSelectById';
-      } else {
-        throw new \\PDOException('El borrado lógico solo puede ser falso o verdadero para borrado físico', 500);
+      }
+      else {
+        throw new \\Exception('El borrado lógico solo puede ser falso o verdadero para borrado físico', 500);
       }$setDbParamID
       \$this->execute(\$sql);
       return true;
-    } catch (\\PDOException \$exc) {
-      throw new \\PDOException(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
+    }
+    catch (\\Exception \$exc) {
+      throw new \\Exception(\$exc->getMessage(), \$exc->getCode(), \$exc->getPrevious());
     }
   }
 DELETE;

@@ -24,22 +24,22 @@ interface ITable
    * @param int $limit
    * @param int $offset
    */
-  public function selectAll(string $order_by = 'id', string $order = 'ASC', int $limit = 0, int $offset = 0);
+  public function SelectAll(string $order_by = 'id', string $order = 'ASC', int $limit = 0, int $offset = 0);
 
   /**
    * 
    */
-  public function save();
+  public function Save();
 
   /**
    * 
    */
-  public function update();
+  public function Update();
 
   /**
    * 
    * @param bool $logical
    */
-  public function delete(bool $logical = true);
+  public function Delete(bool $logical = true);
 
 }

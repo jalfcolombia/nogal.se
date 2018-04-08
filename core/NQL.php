@@ -51,46 +51,18 @@ class NQL implements IDriver
   private $driver;
 
   /**
-   * Dirección de la carpeta contenedora de las clases controladoras para
-   * compatibilidad con NQL y los motores de bases de datos
-   * 
-   * @var string
-   */
-  private $pathDrivers;
-
-  /**
    * Variable contenedora del objeto referente a la clase del motor de
    * bases de datos para NQL
    * 
    * @var object
    */
-  private $driverClass;
+  private $driver_class;
 
-  public function __construct(string $driver, string $pathDrivers = null)
+  public function __construct(string $driver)
   {
-    $this->driver      = $driver;
-    $this->pathDrivers = $pathDrivers;
-    $this->loadDriver();
-    $class             = 'NogalSE\\Driver\\' . $this->driver;
-    $this->driverClass = new $class();
-  }
-
-  /**
-   * Carga el controlador para Nogal Query Language referenciado en el
-   * constructor de la clase NQL
-   * 
-   * @throws \Exception
-   */
-  private function loadDriver()
-  {
-    if ($this->pathDrivers !== null) {
-      if (is_file($this->pathDrivers . $this->driver . '.php') === true) {
-        require_once $this->pathDrivers . $this->driver . '.php';
-      }
-      else {
-        throw new \Exception('El controlador ' . $this->driver . ' no existe');
-      }
-    }
+    $this->driver       = $driver;
+    $class              = 'NogalSE\\Driver\\' . $this->driver;
+    $this->driver_class = new $class();
   }
 
   /**
@@ -102,9 +74,9 @@ class NQL implements IDriver
    * opción permite enlazar (bind) con la clase PDOStatement
    * @return $this
    */
-  public function condition(string $typeCondition, string $condition, bool $raw = true)
+  public function Condition(string $typeCondition, string $condition, bool $raw = true)
   {
-    $this->driverClass->Condition($typeCondition, $condition, $raw);
+    $this->driver_class->Condition($typeCondition, $condition, $raw);
     return $this;
   }
 
@@ -114,9 +86,9 @@ class NQL implements IDriver
    * @param string $table Tabla de donde se borrará la información
    * @return $this
    */
-  public function delete(string $table)
+  public function Delete(string $table)
   {
-    $this->driverClass->Delete($table);
+    $this->driver_class->Delete($table);
     return $this;
   }
 
@@ -126,9 +98,9 @@ class NQL implements IDriver
    * @param string $table Tabla en la cual se realizará la consulta
    * @return $this
    */
-  public function from(string $table)
+  public function From(string $table)
   {
-    $this->driverClass->From($table);
+    $this->driver_class->From($table);
     return $this;
   }
 
@@ -139,9 +111,9 @@ class NQL implements IDriver
    * @param string $columns
    * @return $this
    */
-  public function insert(string $table, string $columns)
+  public function Insert(string $table, string $columns)
   {
-    $this->driverClass->Insert($table, $columns);
+    $this->driver_class->Insert($table, $columns);
     return $this;
   }
 
@@ -151,9 +123,9 @@ class NQL implements IDriver
    * @param float $limit
    * @return $this
    */
-  public function limit(float $limit)
+  public function Limit(float $limit)
   {
-    $this->driverClass->Limit($limit);
+    $this->driver_class->Limit($limit);
     return $this;
   }
 
@@ -163,9 +135,9 @@ class NQL implements IDriver
    * @param int $offset
    * @return $this
    */
-  public function offset(int $offset)
+  public function Offset(int $offset)
   {
-    $this->driverClass->Offset($offset);
+    $this->driver_class->Offset($offset);
     return $this;
   }
 
@@ -176,9 +148,9 @@ class NQL implements IDriver
    * @param string $typeOrder
    * @return $this
    */
-  public function orderBy(string $columns, string $typeOrder)
+  public function OrderBy(string $columns, string $typeOrder)
   {
-    $this->driverClass->OrderBy($columns, $typeOrder);
+    $this->driver_class->OrderBy($columns, $typeOrder);
     return $this;
   }
 
@@ -188,9 +160,9 @@ class NQL implements IDriver
    * @param string $columns
    * @return $this
    */
-  public function select(string $columns)
+  public function Select(string $columns)
   {
-    $this->driverClass->Select($columns);
+    $this->driver_class->Select($columns);
     return $this;
   }
 
@@ -201,9 +173,9 @@ class NQL implements IDriver
    * @param bool $raw
    * @return $this
    */
-  public function set(string $columnsAndValues, bool $raw = true)
+  public function Set(string $columnsAndValues, bool $raw = true)
   {
-    $this->driverClass->Set($columnsAndValues, $raw);
+    $this->driver_class->Set($columnsAndValues, $raw);
     return $this;
   }
 
@@ -213,9 +185,9 @@ class NQL implements IDriver
    * @param string $table
    * @return $this
    */
-  public function update(string $table)
+  public function Update(string $table)
   {
-    $this->driverClass->Update($table);
+    $this->driver_class->Update($table);
     return $this;
   }
 
@@ -225,9 +197,9 @@ class NQL implements IDriver
    * @param string $values
    * @return $this
    */
-  public function values(string $values)
+  public function Values(string $values)
   {
-    $this->driverClass->Values($values);
+    $this->driver_class->Values($values);
     return $this;
   }
 
@@ -238,9 +210,9 @@ class NQL implements IDriver
    * @param bool $raw
    * @return $this
    */
-  public function where(string $condition, bool $raw = true)
+  public function Where(string $condition, bool $raw = true)
   {
-    $this->driverClass->Where($condition, $raw);
+    $this->driver_class->Where($condition, $raw);
     return $this;
   }
 
@@ -251,7 +223,7 @@ class NQL implements IDriver
    */
   public function __toString(): string
   {
-    return $this->driverClass->__toString();
+    return $this->driver_class->__toString();
   }
 
 }

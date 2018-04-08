@@ -41,7 +41,7 @@ class Table
         // behavior para created
         case 'created':
           $column                    = (isset($columns['created']['name']) === true) ? $columns['created']['name'] : $columns['created']['column'];
-          $this->behavior['private'] .= "  private \$$column;" . ((isset($columns['updated']) === true) or ( isset($columns['deleted']) === true)) ? "\n" : null;
+          $this->behavior['private'] .= "\n  private \$$column;" . (((isset($columns['updated']) === true) or ( isset($columns['deleted']) === true)) ? "\n" : null);
           if (isset($columns['created']['not_null']) === true and $columns['created']['not_null'] === true) {
             if (strpos($columns['created']['default'], ':') !== false) {
               $default = str_replace(':', '', $columns['created']['default']);
@@ -55,7 +55,8 @@ class Table
           $columCamelCase            = str_replace(' ', '', ucwords(str_replace('_', ' ', $column)));
           $this->behavior['getter']  .= <<<GETTER
 
-  public function get$columCamelCase() {
+  public function Get$columCamelCase()
+  {
     return \$this->$column;
   }
 
@@ -63,10 +64,11 @@ GETTER;
           $this->behavior['setter']  .= <<<SETTER
 
   /**
-   *
+   * 
    * @return \$this
    */
-  public function set$columCamelCase(\$$column) {
+  public function Set$columCamelCase(string \$$column)
+  {
     \$this->$column = \$$column;
     return \$this;
   }
@@ -76,7 +78,7 @@ SETTER;
         // behavior para updated
         case 'updated':
           $column                    = (isset($columns['updated']['name']) === true) ? $columns['updated']['name'] : $columns['updated']['column'];
-          $this->behavior['private'] .= "  private \$$column;" . ((isset($columns['deleted']) === true)) ? "\n" : null;
+          $this->behavior['private'] .= "  private \$$column;" . ((isset($columns['deleted']) === true) ? "\n" : null);
 
           if (isset($columns['updated']['not_null']) === true and $columns['updated']['not_null'] === true) {
             if (strpos($columns['updated']['default'], ':') !== false) {
@@ -91,7 +93,8 @@ SETTER;
           $columCamelCase            = str_replace(' ', '', ucwords(str_replace('_', ' ', $column)));
           $this->behavior['getter']  .= <<<GETTER
 
-  public function get$columCamelCase() {
+  public function Get$columCamelCase()
+  {
     return \$this->$column;
   }
 
@@ -99,10 +102,11 @@ GETTER;
           $this->behavior['setter']  .= <<<SETTER
 
   /**
-   *
+   * 
    * @return \$this
    */
-  public function set$columCamelCase(\$$column) {
+  public function Set$columCamelCase(string \$$column)
+  {
     \$this->$column = \$$column;
     return \$this;
   }
@@ -127,7 +131,8 @@ SETTER;
           $columCamelCase           = str_replace(' ', '', ucwords(str_replace('_', ' ', $column)));
           $this->behavior['getter'] .= <<<GETTER
 
-  public function get$columCamelCase() {
+  public function Get$columCamelCase()
+  {
     return \$this->$column;
   }
 
@@ -135,10 +140,11 @@ GETTER;
           $this->behavior['setter'] .= <<<SETTER
 
   /**
-   *
+   * 
    * @return \$this
    */
-  public function set$columCamelCase(\$$column) {
+  public function Set$columCamelCase(string \$$column)
+  {
     \$this->$column = \$$column;
     return \$this;
   }
@@ -159,9 +165,10 @@ SETTER;
 
   private function generateColumn($table, $column, $data)
   {
+    $type       = $data['type'];
     $columnName = (isset($data['name']) === true) ? $data['name'] : $column;
     // LENGTH
-    if ($data['type'] === 'string' or $data['type'] === 'file') {
+    if ($type === 'string' or $type === 'file') {
       $this->length .= "\n  const " . strtoupper($columnName) . "_LENGTH = " . $data['length'] . ";";
     }
 
@@ -175,16 +182,16 @@ SETTER;
         $default = str_replace('__', '', $data['default']);
       }
       else {
-        if ($data['type'] === 'bool' and $data['default'] === true) {
+        if ($type === 'bool' and $data['default'] === true) {
           $default = 'true';
         }
-        else if ($data['type'] === 'bool' and $data['default'] === false) {
+        else if ($type === 'bool' and $data['default'] === false) {
           $default = 'false';
         }
-        else if ($data['type'] === 'int') {
+        else if ($type === 'int') {
           $default = $data['default'];
         }
-        else if ($data['type'] === 'string' or $data['type'] === 'file') {
+        else if ($type === 'string' or $data['type'] === 'file') {
           $default = "'" . $data['default'] . "'";
         }
       }
@@ -196,7 +203,8 @@ SETTER;
     if (isset($data['foreign_key']) === false) {
       $this->getter .= <<<GETTER
 
-  public function get$columCamelCase() {
+  public function Get$columCamelCase()
+  {
     return \$this->$columnName;
   }
 
@@ -208,7 +216,7 @@ GETTER;
       $fk        = $data['foreign_key'];
       // \$sql = 'SELECT $tableFK.$displayFK AS custom FROM $tableFK WHERE $tableFK.$fk = $table.$column AND ';
       $typeBind  = '';
-      switch ($data['type']) {
+      switch ($type) {
         case 'int':
           $typeBind = "\\PDO::PARAM_INT";
           break;
@@ -224,14 +232,17 @@ GETTER;
       }
       $this->getter .= <<<GETTER
 
-  public function get$columCamelCase(bool \$deep = false) {
-    if (is_bool(\$deep) === true and \$deep === true) {
-      \$sql = 'SELECT $tableFK.$displayFK AS custom FROM $tableFK WHERE $tableFK.$fk = :$columnName';
-      \$answer = \$this->setDbParam(':$columnName', \$this->$columnName, $typeBind)->query(\$sql)[0]->custom;
-    } else if (is_bool(\$deep) === true and \$deep === false) {
+  public function Get$columCamelCase(bool \$deep = false)
+  {
+    if (\$deep === true) {
+      \$sql = 'SELECT $tableFK.$displayFK AS $displayFK FROM $tableFK WHERE $tableFK.$fk = :$columnName';
+      \$answer = \$this->setDbParam(':$columnName', \$this->$columnName, $typeBind)->query(\$sql)[0]->$displayFK;
+    }
+    else if (\$deep === false) {
       \$answer = \$this->$columnName;
-    } else {
-      throw new \\PDOException('La opción \$deep solo puede ser falso o verdadero', 500);
+    }
+    else {
+      throw new \\Exception('La opción \$deep solo puede ser falso o verdadero', 500);
     }
     return \$answer;
   }
@@ -242,10 +253,11 @@ GETTER;
     $this->setter .= <<<SETTER
 
   /**
-   *
+   * 
    * @return \$this
    */
-  public function set$columCamelCase(\$$columnName) {
+  public function Set$columCamelCase($type \$$columnName)
+  {
     \$this->$columnName = \$$columnName;
     return \$this;
   }
@@ -270,7 +282,7 @@ SETTER;
 
   public function getPrivate()
   {
-    return $this->private;
+    return $this->private . $this->getBehavior()['private'];
   }
 
   public function getDefault()

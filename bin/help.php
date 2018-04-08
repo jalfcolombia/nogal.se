@@ -6,11 +6,11 @@ The NogalSE project seeks to implement a way of working with the DAO development
   
 The way to use the NogalSE command is as follows:
   
-  ./vendor/nogal.se/bin/NogalSE generate:[FILE PATH YAML] output:[DIRECTORY PATH TARGET]
+  ./vendor/nogal.se/bin/NogalSE generate:[FILE PATH YAML] output:[DIRECTORY PATH TARGET] app:[NAME YOUR APP]
   
 Example:
   
-  ./vendor/nogal.se/bin/NogalSE generate:/var/www/database.yml output:/var/www/model/
+  ./vendor/nogal.se/bin/NogalSE generate:/var/www/database.yml output:/var/www/model/ app:MyApp
 
 HELP;
 

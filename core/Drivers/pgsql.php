@@ -35,7 +35,7 @@ class pgsql implements IDriver
    * @param string $table
    * @return $this
    */
-  public function delete(string $table)
+  public function Delete(string $table)
   {
     $this->nql = 'DELETE FROM ' . $table . ' ';
     return $this;
@@ -46,7 +46,7 @@ class pgsql implements IDriver
    * @param string $table
    * @return $this
    */
-  public function from(string $table)
+  public function From(string $table)
   {
     $this->nql .= 'FROM ' . $table . ' ';
     return $this;
@@ -58,7 +58,7 @@ class pgsql implements IDriver
    * @param string $columns
    * @return $this
    */
-  public function insert(string $table, string $columns)
+  public function Insert(string $table, string $columns)
   {
     $this->nql = 'INSERT INTO ' . $table . ' (' . $columns . ') ';
     return $this;
@@ -69,7 +69,7 @@ class pgsql implements IDriver
    * @param int $limit
    * @return $this
    */
-  public function limit(float $limit)
+  public function Limit(float $limit)
   {
     $this->nql .= 'LIMIT ' . $limit . ' ';
     return $this;
@@ -80,7 +80,7 @@ class pgsql implements IDriver
    * @param int $offset
    * @return $this
    */
-  public function offset(int $offset)
+  public function Offset(int $offset)
   {
     $this->nql .= 'OFFSET ' . $offset . ' ';
     return $this;
@@ -91,7 +91,7 @@ class pgsql implements IDriver
    * @param string $typeOrder
    * @return $this
    */
-  public function orderBy(string $columns, string $typeOrder)
+  public function OrderBy(string $columns, string $typeOrder)
   {
     $this->nql .= 'ORDER BY ' . $columns . ' ' . $typeOrder . ' ';
     return $this;
@@ -102,7 +102,7 @@ class pgsql implements IDriver
    * @param string $columns
    * @return $this
    */
-  public function select(string $columns)
+  public function Select(string $columns)
   {
     $this->nql = 'SELECT ' . $columns . ' ';
     return $this;
@@ -114,7 +114,7 @@ class pgsql implements IDriver
    * @param bool $raw
    * @return $this
    */
-  public function set(string $columnsAndValues, bool $raw = true)
+  public function Set(string $columnsAndValues, bool $raw = true)
   {
     if ($raw === true) {
       $this->nql .= 'SET ' . $columnsAndValues . ' ';
@@ -137,7 +137,7 @@ class pgsql implements IDriver
    * @param string $table
    * @return $this
    */
-  public function update(string $table)
+  public function Update(string $table)
   {
     $this->nql = 'UPDATE ' . $table . ' ';
     return $this;
@@ -147,7 +147,7 @@ class pgsql implements IDriver
    * 
    * @param string $values
    */
-  public function values(string $values)
+  public function Values(string $values)
   {
     $this->nql .= 'VALUES (' . $values . ') ';
     return $this;
@@ -159,13 +159,13 @@ class pgsql implements IDriver
    * @param bool $raw
    * @return $this
    */
-  public function where(string $condition, bool $raw = true)
+  public function Where(string $condition, bool $raw = true)
   {
     if ($raw === true) {
       $this->nql .= 'WHERE ' . $condition . ' ';
     }
     elseif ($raw === false) {
-      $this->nql .= 'WHERE ' . $condition . ' = :' . $condition . ' ';
+      $this->nql .= 'WHERE ' . $condition . ' = :' . str_replace('.', '_', $condition) . ' ';
     }
     return $this;
   }
@@ -177,13 +177,13 @@ class pgsql implements IDriver
    * @param bool $raw
    * @return $this
    */
-  public function condition(string $typeCondition, string $condition, bool $raw = true)
+  public function Condition(string $typeCondition, string $condition, bool $raw = true)
   {
     if ($raw === true) {
       $this->nql .= $typeCondition . ' ' . $condition . ' ';
     }
     elseif ($raw === false) {
-      $this->nql .= $typeCondition . ' ' . $condition . ' = :' . $condition . ' ';
+      $this->nql .= $typeCondition . ' ' . $condition . ' = :' . str_replace('.', '_', $condition) . ' ';
     }
     return $this;
   }

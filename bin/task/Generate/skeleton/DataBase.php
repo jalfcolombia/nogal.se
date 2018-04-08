@@ -14,6 +14,7 @@ class $DataBase extends DataSource
   {
     parent::__construct(\$config);
   }
+
 }
 
 BLOCK;
