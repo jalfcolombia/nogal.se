@@ -18,6 +18,7 @@ use NogalSE\Interfaces\IDriver;
  * operaciones básicas sobre entidades tales como la creación, borrado, carga,
  * filtrado y ordenación. En ocasiones, sin embargo, es necesario realizar
  * consultas más complejas que no pueden resolverse con estos métodos.
+ * 
  * @author Julián Andrés Lasso Figueroa <jalasso69@misena.edu.co>
  */
 class NQL implements IDriver
