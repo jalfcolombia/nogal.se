@@ -19,7 +19,7 @@ class $Table extends $DataBase implements ITable
   const SEQUENCE = '$sequence';$length
 $private
 
-  public function __construct(\$config)
+  public function __construct(array \$config = array())
   {
     parent::__construct(\$config);$default
   }

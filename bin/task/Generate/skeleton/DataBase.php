@@ -10,7 +10,7 @@ use NogalSE\\DataSource;
 class $DataBase extends DataSource
 {
 
-  public function __construct(\$config)
+  public function __construct(array \$config = array())
   {
     parent::__construct(\$config);
   }

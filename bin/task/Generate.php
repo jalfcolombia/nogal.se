@@ -82,7 +82,7 @@ class Generate implements ITask
     $gCrud->main($table, $columns);
 
     $DataBase   = $this->dataSource;
-    $Table      = str_replace(' ', '', ucfirst(str_replace('_', ' ', $table)));
+    $Table      = str_replace(' ', '', ucwords(ucfirst(str_replace('_', ' ', $table))));
     $sequence   = $gTable->getSequence();
     $length     = $gTable->getLength();
     $private    = $gTable->getPrivate();

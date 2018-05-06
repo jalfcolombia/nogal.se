@@ -124,7 +124,7 @@ class mysql implements IDriver
       $data             = explode(',', $columnsAndValues);
       $set              = '';
       foreach ($data as $column) {
-        $set .= $column . ' = :' . $column . ', ';
+        $set .= $column . ' = :' . str_replace('.', '_', $column) . ', ';
       }
       $set       = substr($set, 0, -2);
       $this->nql .= 'SET ' . $set . ' ';
