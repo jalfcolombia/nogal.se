@@ -2,4 +2,7 @@ nbproject/
 vendor/
 output/
 .idea/
+.settings/
+.project
+.buildpath
 composer.lock
