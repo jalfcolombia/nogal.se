@@ -12,6 +12,7 @@ Example:
   
   ./vendor/nogal.se/bin/NogalSE generate:/var/www/database.yml output:/var/www/model/ app:MyApp
 
+
 HELP;
 
 echo $help;

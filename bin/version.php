@@ -1,2 +1,2 @@
 <?php
-define('NOGALSE_VERSION', '0.0.3');
+define('NOGALSE_VERSION', '0.0.6');

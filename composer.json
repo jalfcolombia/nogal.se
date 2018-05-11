@@ -1,32 +1,43 @@
 {
-  "name": "sena/nogal.se",
-  "description": "Nogal (Student Edition) - This is an ORM implementation in PHP7 based on DAO to be used in the learning environments of the National Learning Service - SENA in Colombia.",
-  "version": "0.0.4",
-  "type": "library",
-  "keywords": ["orm", "sena", "nogal", "nogalorm", "dao", "database", "php7", "adsi", "cta", "lasso", "jalf", "jalfcolombia"],
-  "homepage": "https://jalfcolombia.github.io/nogal.se/",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Julian Andres Lasso Figueroa",
-      "email": "jalasso69@misena.edu.co",
-      "role": "Developer"
-    }
-  ],
-  "support": {
-    "email": "jalasso69@misena.edu.co",
-    "issues": "https://github.com/jalfcolombia/nogal.se/issues",
-    "wiki": "https://github.com/jalfcolombia/nogal.se/wiki",
-    "source": "https://github.com/jalfcolombia/nogal.se/"
-  },
-  "require": {
-    "php": ">=7.0.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "NogalSE\\": "core/",
-      "NogalSE\\Driver\\": "core/Drivers/",
-      "NogalSE\\Interfaces\\": "core/Interfaces/"
-    }
-  }
+	"name" : "sena/nogal.se",
+	"description" : "Nogal (Student Edition) - This is an ORM implementation in PHP7 based on DAO to be used in the learning environments of the National Learning Service - SENA in Colombia.",
+	"version" : "0.0.6",
+	"type" : "library",
+	"keywords" : [
+		"orm",
+		"sena",
+		"nogal",
+		"nogalorm",
+		"dao",
+		"database",
+		"php7",
+		"adsi",
+		"cta",
+		"lasso",
+		"jalf",
+		"jalfcolombia"
+	],
+	"homepage" : "https://jalfcolombia.github.io/nogal.se/",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Julian Andres Lasso Figueroa",
+			"email" : "jalasso69@misena.edu.co",
+			"role" : "Developer"
+		}
+	],
+	"support" : {
+		"email" : "jalasso69@misena.edu.co",
+		"issues" : "https://github.com/jalfcolombia/nogal.se/issues",
+		"wiki" : "https://github.com/jalfcolombia/nogal.se/wiki",
+		"source" : "https://github.com/jalfcolombia/nogal.se/"
+	},
+	"require" : {
+		"php" : ">=7.0.0",
+		"symfony/yaml" : "^4.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"NogalSE\\" : "core/"
+		}
+	}
 }
