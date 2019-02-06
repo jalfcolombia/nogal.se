@@ -263,7 +263,7 @@ class DataSource
      * @param \PDOException $exc
      * @throws \Exception
      */
-    protected function throwNewExceptionFromException(\Exception $exc): void
+    protected function throwNewExceptionFromException(\Exception $exc)
     {
         $code = (strlen($exc->getCode()) > 0) ? $exc->getCode() : '0';
         $previous = ($exc->getPrevious() !== null) ? $exc->getPrevious() : '';
@@ -314,10 +314,11 @@ class DataSource
      * @param \PDOException $exc
      * @throws \Exception
      */
-    private function throwNewExceptionFromPDOException(\PDOException $exc): void
+    private function throwNewExceptionFromPDOException(\PDOException $exc)
     {
-        $code = (strlen($exc->getCode()) > 0) ? $exc->getCode() : '0';
-        $previous = ($exc->getPrevious() !== null) ? $exc->getPrevious() : '';
-        throw new \Exception($exc->getMessage(), $code, $previous);
+        // $code = (strlen($exc->getCode()) > 0) ? $exc->getCode() : '0';
+        // $previous = ($exc->getPrevious() !== null) ? $exc->getPrevious() : '';
+        // throw new \Exception($exc->getMessage(), $code, $previous);
+        throw new \Exception($exc->getMessage());
     }
 }
